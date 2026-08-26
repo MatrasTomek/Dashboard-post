@@ -1,0 +1,123 @@
+<div class="topbar">
+  <h1>{{ isNew() ? 'Nowy post' : 'Edycja posta' }}</h1>
+  <a routerLink="/">← Powrót do listy</a>
+</div>
+
+<div class="content">
+  @if (loading()) {
+    <p class="loading">Wczytywanie…</p>
+  } @else {
+    @if (errorMessage()) {
+      <p class="message error">{{ errorMessage() }}</p>
+    }
+
+    @if (isNew()) {
+      <section class="card">
+        <h2>1. Opisz produkt/usługę</h2>
+        <p class="hint">Opisz krótko, co chcesz promować — Claude wygeneruje na tej podstawie treść posta.</p>
+        <textarea
+          rows="4"
+          placeholder="np. Ręcznie robione mydła naturalne o zapachu lawendy, 50 zł za sztukę, dostępne od piątku."
+          [(ngModel)]="productDescription"
+          name="productDescription"
+        ></textarea>
+        <button (click)="createDraft()" [disabled]="creatingDraft() || productDescription.trim() === ''">
+          {{ creatingDraft() ? 'Tworzenie…' : 'Dalej: generuj podpis' }}
+        </button>
+      </section>
+    } @else {
+      <section class="card">
+        <h2>1. Opis produktu/usługi</h2>
+        <textarea rows="4" [(ngModel)]="productDescription" name="productDescription"></textarea>
+        <button (click)="saveDescription()" [disabled]="savingDescription()">
+          {{ savingDescription() ? 'Zapisywanie…' : 'Zapisz opis' }}
+        </button>
+      </section>
+
+      <section class="card">
+        <h2>2. Wygeneruj i edytuj podpis</h2>
+        <button (click)="generateCaption()" [disabled]="generating()">
+          {{ generating() ? 'Generowanie…' : (post()?.generatedCaption ? 'Generuj ponownie' : 'Generuj podpis') }}
+        </button>
+
+        <label class="caption-label">
+          Treść posta (edytowalna, wspólna dla Facebooka i Instagrama — możesz też wpisać ją ręcznie)
+          <textarea
+            rows="6"
+            placeholder="Treść posta pojawi się tutaj po wygenerowaniu, albo wpisz ją samodzielnie."
+            [(ngModel)]="captionDraft"
+            name="captionDraft"
+          ></textarea>
+        </label>
+        <button (click)="saveCaption()" [disabled]="savingCaption() || captionDraft.trim() === ''">
+          {{ savingCaption() ? 'Zapisywanie…' : 'Zapisz treść' }}
+        </button>
+        @if (captionSaved()) {
+          <p class="message success">Treść zapisana.</p>
+        }
+      </section>
+
+      <section class="card">
+        <h2>3. Zdjęcie/wideo</h2>
+        <p class="hint">
+          Instagram wymaga załączonego zdjęcia lub wideo do każdego posta. Facebook może być
+          publikowany też bez medium.
+        </p>
+
+        @if (localPreviewUrl() || post()?.mediaFilename) {
+          <div class="media-preview">
+            @if (post()?.mediaType === 'video') {
+              <video [src]="localPreviewUrl() ?? ('/uploads/' + post()!.mediaFilename)" controls></video>
+            } @else {
+              <img [src]="localPreviewUrl() ?? ('/uploads/' + post()!.mediaFilename)" alt="Podgląd medium" />
+            }
+          </div>
+          <button class="danger" (click)="removeMedia()" [disabled]="uploadingMedia()">Usuń medium</button>
+        } @else {
+          <label class="file-input">
+            <input type="file" accept="image/jpeg,image/png,video/mp4" (change)="onFileSelected($event)" />
+            {{ uploadingMedia() ? 'Wysyłanie…' : 'Wybierz plik (JPEG, PNG lub MP4)' }}
+          </label>
+        }
+
+        @if (mediaError()) {
+          <p class="message error">{{ mediaError() }}</p>
+        }
+      </section>
+
+      <section class="card">
+        <h2>4. Publikacja</h2>
+
+        <button class="publish-both" (click)="publishBoth()" [disabled]="publishingBoth()">
+          {{ publishingBoth() ? 'Publikowanie…' : 'Publikuj na oba (Facebook + Instagram)' }}
+        </button>
+
+        <div class="publish-row">
+          <div class="publish-platform">
+            <span class="platform-name">Facebook</span>
+            <span class="badge platform-{{ post()?.fbStatus }}">{{ post()?.fbStatus }}</span>
+          </div>
+          <button (click)="publishFacebook()" [disabled]="publishingFacebook()">
+            {{ publishingFacebook() ? 'Publikowanie…' : (post()?.fbStatus === 'success' ? 'Opublikuj ponownie' : (post()?.fbStatus === 'failed' ? 'Spróbuj ponownie' : 'Publikuj na Facebook')) }}
+          </button>
+        </div>
+        @if (post()?.fbError) {
+          <p class="message error">{{ post()!.fbError }}</p>
+        }
+
+        <div class="publish-row">
+          <div class="publish-platform">
+            <span class="platform-name">Instagram</span>
+            <span class="badge platform-{{ post()?.igStatus }}">{{ post()?.igStatus }}</span>
+          </div>
+          <button (click)="publishInstagram()" [disabled]="publishingInstagram()">
+            {{ publishingInstagram() ? 'Publikowanie…' : (post()?.igStatus === 'success' ? 'Opublikuj ponownie' : (post()?.igStatus === 'failed' ? 'Spróbuj ponownie' : 'Publikuj na Instagram')) }}
+          </button>
+        </div>
+        @if (post()?.igError) {
+          <p class="message error">{{ post()!.igError }}</p>
+        }
+      </section>
+    }
+  }
+</div>

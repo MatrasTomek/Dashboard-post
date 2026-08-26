@@ -1,0 +1,22 @@
+# Backend
+/backend/vendor/
+/backend/config/config.local.php
+
+# Frontend
+/frontend/node_modules/
+/frontend/dist/
+/frontend/.angular/
+
+# Deployment output
+/public/index.html
+/public/*.js
+/public/*.css
+/public/assets/
+/public/uploads/*
+!/public/uploads/.gitkeep
+!/public/uploads/.htaccess
+
+# OS / editors
+.DS_Store
+*.log
+/todo.md

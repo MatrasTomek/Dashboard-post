@@ -1,0 +1,136 @@
+<div class="topbar">
+  <h1>Ustawienia</h1>
+  <a routerLink="/">← Powrót</a>
+</div>
+
+@if (loading()) {
+  <p class="loading">Wczytywanie…</p>
+} @else {
+  <section class="card">
+    <h2>Klucz API Anthropic (Claude)</h2>
+    <p class="hint">
+      Twój własny klucz API z
+      <a href="https://console.anthropic.com/" target="_blank" rel="noopener">console.anthropic.com</a>.
+      Jest przechowywany zaszyfrowany na serwerze i używany tylko do generowania treści Twoich postów.
+    </p>
+
+    <p class="status">
+      Status:
+      @if (settings()?.anthropicKeyConfigured) {
+        <span class="ok">skonfigurowany ✓</span>
+      } @else {
+        <span class="missing">nie skonfigurowany</span>
+      }
+    </p>
+
+    <div class="row">
+      <input
+        type="password"
+        placeholder="sk-ant-..."
+        [ngModel]="apiKeyInput()"
+        (ngModelChange)="apiKeyInput.set($event)"
+        name="apiKey"
+      />
+      <button (click)="saveApiKey()" [disabled]="savingKey()">
+        {{ savingKey() ? 'Zapisywanie…' : 'Zapisz' }}
+      </button>
+    </div>
+
+    <div class="row">
+      <button (click)="testApiKey()" [disabled]="testingKey() || !settings()?.anthropicKeyConfigured">
+        {{ testingKey() ? 'Testowanie…' : 'Testuj zapisany klucz' }}
+      </button>
+      <button class="danger" (click)="deleteApiKey()" [disabled]="!settings()?.anthropicKeyConfigured">
+        Usuń klucz
+      </button>
+    </div>
+
+    @if (keyMessage()) {
+      <p [class]="'message ' + keyMessage()!.type">{{ keyMessage()!.text }}</p>
+    }
+  </section>
+
+  <section class="card">
+    <h2>Konto Facebook / Instagram</h2>
+    <p class="hint">
+      Połącz Stronę na Facebooku (i powiązane z nią konto Instagram Business), aby publikować posty
+      bezpośrednio z aplikacji.
+    </p>
+
+    @if (socialLoading()) {
+      <p class="loading">Wczytywanie…</p>
+    } @else if (socialStatus()?.connected) {
+      <p class="status">
+        Strona Facebook: <strong>{{ socialStatus()!.fbPageName }}</strong>
+        @if (socialStatus()!.igUsername) {
+          &middot; Instagram: <strong>&#64;{{ socialStatus()!.igUsername }}</strong>
+        } @else {
+          &middot; <span class="missing">brak powiązanego konta Instagram Business</span>
+        }
+      </p>
+      <p class="status">
+        Status:
+        @if (socialStatus()!.status === 'active') {
+          <span class="ok">połączenie aktywne ✓</span>
+        } @else {
+          <span class="missing">wygasło — połącz ponownie</span>
+        }
+      </p>
+
+      <div class="row">
+        <button (click)="checkSocialHealth()" [disabled]="checkingHealth()">
+          {{ checkingHealth() ? 'Sprawdzanie…' : 'Sprawdź połączenie' }}
+        </button>
+        <button (click)="connectFacebook()" [disabled]="connecting()">
+          {{ connecting() ? 'Przekierowanie…' : 'Połącz ponownie' }}
+        </button>
+        <button class="danger" (click)="disconnectFacebook()">Odłącz</button>
+      </div>
+    } @else {
+      <p class="status"><span class="missing">nie połączono</span></p>
+      <button (click)="connectFacebook()" [disabled]="connecting()">
+        {{ connecting() ? 'Przekierowanie…' : 'Połącz konto Facebook' }}
+      </button>
+    }
+
+    @if (socialMessage()) {
+      <p [class]="'message ' + socialMessage()!.type">{{ socialMessage()!.text }}</p>
+    }
+  </section>
+
+  <section class="card">
+    <h2>Preferencje generowania</h2>
+
+    <label>
+      Domyślny model
+      <select [(ngModel)]="defaultModel" name="defaultModel">
+        @for (model of availableModels; track model.id) {
+          <option [value]="model.id">{{ model.label }}</option>
+        }
+      </select>
+    </label>
+
+    <label>
+      Budżet tokenów historii postów (kontekst dla generatora)
+      <input type="number" min="500" max="100000" step="500" [(ngModel)]="historyTokenBudget" name="historyTokenBudget" />
+    </label>
+
+    <label>
+      Notatki o brand voice (opcjonalnie)
+      <textarea
+        rows="3"
+        placeholder="np. Ton przyjazny i energiczny, dużo emoji, krótkie hasła."
+        [(ngModel)]="brandVoiceNotes"
+        name="brandVoiceNotes"
+      ></textarea>
+    </label>
+
+    <button (click)="savePreferences()" [disabled]="savingPreferences()">
+      {{ savingPreferences() ? 'Zapisywanie…' : 'Zapisz preferencje' }}
+    </button>
+
+    @if (preferencesMessage()) {
+      <p [class]="'message ' + preferencesMessage()!.type">{{ preferencesMessage()!.text }}</p>
+    }
+  </section>
+}

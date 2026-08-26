@@ -1,0 +1,43 @@
+<div class="topbar">
+  <h1>Post Dashboard</h1>
+  <div>
+    <span>{{ auth.currentUser()?.username }}</span>
+    <a routerLink="/settings">Ustawienia</a>
+    <button (click)="logout()">Wyloguj</button>
+  </div>
+</div>
+
+<div class="content">
+  <div class="actions">
+    <a class="button" routerLink="/posts/new">+ Nowy post</a>
+  </div>
+
+  @if (loading()) {
+    <p class="loading">Wczytywanie…</p>
+  } @else if (posts().length === 0) {
+    <p class="empty">Brak postów. Kliknij "Nowy post", aby utworzyć pierwszy.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Opis</th>
+          <th>Status</th>
+          <th>Facebook</th>
+          <th>Instagram</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (post of posts(); track post.id) {
+          <tr [routerLink]="['/posts', post.id]">
+            <td class="description">{{ post.productDescription || '(bez opisu)' }}</td>
+            <td><span class="badge status-{{ post.status }}">{{ statusLabel(post.status) }}</span></td>
+            <td><span class="badge platform-{{ post.fbStatus }}">{{ post.fbStatus }}</span></td>
+            <td><span class="badge platform-{{ post.igStatus }}">{{ post.igStatus }}</span></td>
+            <td>{{ post.createdAt }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

@@ -1,0 +1,24 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Never rewrite requests for the API — public/api/.htaccess handles those
+  RewriteCond %{REQUEST_URI} ^/api/ [NC]
+  RewriteRule ^ - [L]
+
+  # Never rewrite requests for real files/directories (assets, favicon, uploads, ...)
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Everything else -> Angular's index.html so client-side routing survives refresh/deep-link
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+# Force HTTPS (OVH provides free Let's Encrypt certs) — enable only once the cert is issued.
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>

@@ -1,0 +1,24 @@
+<div class="login-page">
+  <form class="login-card" (ngSubmit)="submit()">
+    <h1>Post Dashboard</h1>
+    <p class="subtitle">Zaloguj się, aby zarządzać postami</p>
+
+    <label>
+      Nazwa użytkownika
+      <input type="text" name="username" [(ngModel)]="username" required autocomplete="username" />
+    </label>
+
+    <label>
+      Hasło
+      <input type="password" name="password" [(ngModel)]="password" required autocomplete="current-password" />
+    </label>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    <button type="submit" [disabled]="submitting()">
+      {{ submitting() ? 'Logowanie…' : 'Zaloguj się' }}
+    </button>
+  </form>
+</div>

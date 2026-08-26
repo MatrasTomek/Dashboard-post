@@ -1,0 +1,173 @@
+:host {
+  display: block;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.loading {
+  color: #666;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.card.upcoming {
+  opacity: 0.6;
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 1.05rem;
+}
+
+.hint {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  margin-bottom: 0.75rem;
+  box-sizing: border-box;
+}
+
+.caption-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: #333;
+  margin-top: 0.75rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #2b6cb0;
+  color: white;
+  cursor: pointer;
+}
+
+button.danger {
+  background: #c0392b;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.media-preview {
+  margin-bottom: 0.75rem;
+}
+
+.media-preview img,
+.media-preview video {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 4px;
+  display: block;
+}
+
+.file-input {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px dashed #999;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.file-input input[type='file'] {
+  display: none;
+}
+
+.message {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+}
+
+.message.success {
+  color: #2f855a;
+}
+
+.message.error {
+  color: #c0392b;
+}
+
+.publish-both {
+  width: 100%;
+  margin-bottom: 0.75rem;
+  background: #2f855a;
+}
+
+.publish-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.publish-row:last-of-type {
+  border-bottom: none;
+}
+
+.publish-platform {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.platform-name {
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  background: #edf2f7;
+  color: #4a5568;
+}
+
+.platform-success {
+  background: #c6f6d5;
+  color: #22543d;
+}
+
+.platform-failed {
+  background: #fed7d7;
+  color: #822727;
+}
+
+.platform-pending {
+  background: #feebc8;
+  color: #7b341e;
+}

@@ -1,0 +1,111 @@
+:host {
+  display: block;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.loading {
+  color: #666;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.card h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.hint {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.status {
+  font-size: 0.9rem;
+}
+
+.ok {
+  color: #2f855a;
+  font-weight: 600;
+}
+
+.missing {
+  color: #c05621;
+  font-weight: 600;
+}
+
+.row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.row input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.9rem;
+}
+
+select,
+textarea,
+input[type='number'] {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #2b6cb0;
+  color: white;
+  cursor: pointer;
+}
+
+button.danger {
+  background: #c0392b;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.message {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.message.success {
+  color: #2f855a;
+}
+
+.message.error {
+  color: #c0392b;
+}

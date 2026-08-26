@@ -1,0 +1,22 @@
+{
+    "name": "post-dashboard/backend",
+    "description": "REST API backend for the post-dashboard application (Slim 4, PHP, MySQL)",
+    "type": "project",
+    "require": {
+        "php": ">=8.1",
+        "slim/slim": "^4.13",
+        "slim/psr7": "^1.7",
+        "php-di/php-di": "^7.0",
+        "guzzlehttp/guzzle": "^7.9",
+        "anthropic-ai/sdk": "^0.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}
